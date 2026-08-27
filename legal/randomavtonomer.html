@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle License Plate Generator - Voenmine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vehicle License Plate Generator</h1>
+    
+    <div class="container">
+        <label for="region">Select region:</label>
+        <select id="region">
+            <option value="DF-EM">DF-EM</option>
+            <option value="DF-AL">DF-AL</option>
+            <option value="DF-RS">DF-RS</option>
+            <option value="DF-EN">DF-EN</option>
+            <option value="VG-ll">VG-ll</option>
+            <option value="VM-VM">VM-VM</option>
+        </select>
+    </div>
+    
+    <button onclick="generatePlate()">Generate Number</button>
+    
+    <div id="result"></div>
+
+    <script>
+        function generatePlate() {
+            // Генерация случайных букв (AAA)
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let randomLetters = '';
+            for (let i = 0; i < 3; i++) {
+                randomLetters += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            
+            // Генерация случайных цифр (111)
+            let randomNumbers = '';
+            for (let i = 0; i < 3; i++) {
+                randomNumbers += Math.floor(Math.random() * 10);
+            }
+            
+            // Получение выбранного региона
+            const regionSelect = document.getElementById('region');
+            const selectedRegion = regionSelect.value;
+            
+            // Формирование результата
+            const result = randomLetters + randomNumbers + '|' + selectedRegion;
+            
+            // Вывод результата
+            document.getElementById('result').textContent = result;
+        }
+        
+        // Генерируем номер при загрузке страницы
+        window.onload = generatePlate;
+    </script>
+</body>
+</html>

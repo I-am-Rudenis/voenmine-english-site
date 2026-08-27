@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle License Plate Registry - VoenMine</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .logout-btn {
+            background: #e74c3c;
+            margin-top: 10px;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .login-form {
+            display: block;
+        }
+        
+        .dashboard {
+            display: none;
+        }
+        
+        .notification {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .section-title {
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            color: #2c3e50;
+        }
+        
+        .minecraft-element {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .minecraft-icon {
+            width: 40px;
+            height: 40px;
+            background: #5d8c3a;
+            border: 2px solid #3d5a1f;
+            border-radius: 5px;
+            margin-right: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .minecraft-icon::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #3d5a1f;
+            top: 0;
+            left: 0;
+        }
+        
+        .minecraft-icon::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #7ba050;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vehicle License Plate Registry</h1>
+            <div class="subtitle">VoenMine</div>
+        </header>
+        
+        <div class="content">
+            <div class="minecraft-element">
+                <div class="minecraft-icon"></div>
+                <div>Player license plate registry system</div>
+            </div>
+            
+            <div id="loginForm" class="login-form">
+                <h2 class="section-title">Staff Login</h2>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+                
+                <button id="loginBtn">Log in</button>
+                
+                <div id="loginError" class="notification error">
+                    Invalid username or password!
+                </div>
+            </div>
+            
+            <div id="dashboard" class="dashboard">
+                <h2 class="section-title">Dashboard</h2>
+                
+                <div id="notification" class="notification"></div>
+                
+                <h3 class="section-title">Add New Number</h3>
+                <div class="form-group">
+                    <label for="playerName">Player Name:</label>
+                    <input type="text" id="playerName" placeholder="Enter the player nickname">
+                </div>
+                
+                <div class="form-group">
+                    <label for="carNumber">License Plate:</label>
+                    <input type="text" id="carNumber" placeholder="Enter the vehicle license plate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="carModel">Vehicle Model:</label>
+                    <select id="carModel">
+                        <option value="">Select model</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Truck">Truck</option>
+                        <option value="Спортивный">Sports Car</option>
+                    </select>
+                </div>
+                
+                <button id="addBtn">Add Plate</button>
+                
+                <h3 class="section-title">Registered Plates</h3>
+                <table id="numbersTable">
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Plate</th>
+                            <th>Model</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be added via JavaScript -->
+                    </tbody>
+                </table>
+                
+                <button id="logoutBtn" class="logout-btn">Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы DOM
+            const loginForm = document.getElementById('loginForm');
+            const dashboard = document.getElementById('dashboard');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const addBtn = document.getElementById('addBtn');
+            const notification = document.getElementById('notification');
+            const loginError = document.getElementById('loginError');
+            const numbersTable = document.getElementById('numbersTable').getElementsByTagName('tbody')[0];
+            
+            // Данные для входа (в реальном приложении это должно храниться на сервере)
+            const validUsername = "admin";
+            const validPassword = "voenmine2022";
+            
+            // Данные о номерах (в реальном приложении это должно храниться в базе данных)
+            let carNumbersData = JSON.parse(localStorage.getItem('carNumbersData')) || [];
+            
+            // Функция для показа уведомлений
+            function showNotification(message, type) {
+                notification.textContent = message;
+                notification.className = 'notification ' + type;
+                notification.style.display = 'block';
+                
+                // Скрыть уведомление через 3 секунды
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Функция для обновления таблицы
+            function updateTable() {
+                numbersTable.innerHTML = '';
+                
+                carNumbersData.forEach((item, index) => {
+                    const row = numbersTable.insertRow();
+                    
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+                    
+                    cell1.textContent = item.player;
+                    cell2.textContent = item.number;
+                    cell3.textContent = item.model;
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.style.backgroundColor = '#e74c3c';
+                    deleteBtn.style.padding = '5px 10px';
+                    deleteBtn.style.fontSize = '14px';
+                    deleteBtn.addEventListener('click', () => {
+                        deleteNumber(index);
+                    });
+                    
+                    cell4.appendChild(deleteBtn);
+                });
+            }
+            
+            // Функция для удаления номера
+            function deleteNumber(index) {
+                carNumbersData.splice(index, 1);
+                localStorage.setItem('carNumbersData', JSON.stringify(carNumbersData));
+                updateTable();
+                showNotification('Plate deleted successfully', 'success');
+            }
+            
+            // Обработчик входа
+            loginBtn.addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (username === validUsername && password === validPassword) {
+                    loginForm.style.display = 'none';
+                    dashboard.style.display = 'block';
+                    updateTable();
+                } else {
+                    loginError.style.display = 'block';
+                }
+            });
+            
+            // Обработчик выхода
+            logoutBtn.addEventListener('click', function() {
+                loginForm.style.display = 'block';
+                dashboard.style.display = 'none';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                loginError.style.display = 'none';
+            });
+            
+            // Обработчик добавления номера
+            addBtn.addEventListener('click', function() {
+                const playerName = document.getElementById('playerName').value;
+                const carNumber = document.getElementById('carNumber').value;
+                const carModel = document.getElementById('carModel').value;
+                
+                if (!playerName || !carNumber || !carModel) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Добавляем новую запись
+                carNumbersData.push({
+                    player: playerName,
+                    number: carNumber,
+                    model: carModel
+                });
+                
+                // Сохраняем в localStorage
+                localStorage.setItem('carNumbersData', JSON.stringify(carNumbersData));
+                
+                // Обновляем таблицу
+                updateTable();
+                
+                // Очищаем поля ввода
+                document.getElementById('playerName').value = '';
+                document.getElementById('carNumber').value = '';
+                document.getElementById('carModel').value = '';
+                
+                showNotification('Plate added successfully', 'success');
+            });
+        });
+    </script>
+</body>
+</html>
